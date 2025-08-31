@@ -1,0 +1,30 @@
+question 1:
+
+reaguler file -> .txt, .py, .jpj
+directory -> are the folders
+device file -> it contains the files of the hardware devices sush as mouse, keyboard, hard disk
+               there is two types character device and block device
+               character device-> data is handeld one character at a time. ex:/dev/tty for the terminal
+               block device-> data handeld in blocks (chunks) ex: /dev/sda for the hard disk
+symbolic file-> it is a file that is pointing at another file, its inode is different that the original file inode.if the orginal file deleted the data is 
+                lost
+
+check them with ls -l
+
+
+question 2:
+
+symbolic link-> different inode from the original file, points at the orginal file, deleting the orginal file will make the symbolic file useless bec data
+                will be gone
+
+hard ling-> same inode as original file, points at the same data as the original, deleteing the original file won't make a problem the original will be still
+            working 
+
+they are the same-> if we changed anything in any of the symbolic link or hard link the change will be implemented in the orginal file
+
+
+question 3:
+
+rm -r -> removes the directory and all of its contents recursively
+rmdir -> can only remove empty directories
+
