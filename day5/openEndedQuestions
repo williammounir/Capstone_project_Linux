@@ -1,0 +1,74 @@
+1-What’s the difference between ' ' and " " in shell?
+
+single quotes takes everything literally (no command substitution, no escape characters, no escape sequences)
+so if we have a command like that->echo 'hello $user' the output will be hello $user
+while double quotes supports command substitution, escape characters and escape sequences
+
+
+2-Explain [ -f filename ] vs [ -d dirname ].
+
+[-f filename] checks if the file exists and it is a file if yes it returns true
+[-d dirname] checks if it is a directory and it does exists if yes returns true
+
+
+3-Explain stdout/stderr redirection, appending vs overwrite. How can you confirm 
+redirection using file descriptors?
+
+every process has 3 default file descriptors:
+0 stdin-> standard input
+1 stdout-> standard output
+2 stderr-> standard error
+
+redirect:
+
+ls > file.txt
+this redirects the stdout(1) to the file and overwrites the file
+
+ls 2> file.txt 
+this redirects the stderr(2) to the file and same overwrites it
+
+you can also redirect both stderr and stdout by using 2>&1 at the end of the command
+
+ex: ls > file.txt 2>&1
+
+(>) for overwrite (>>) for appending
+
+
+to check the redirect use ls -l /proc/<pid>/fd
+
+
+4-Show an example of a for loop in bash. Then, write a simple bash calculator that does 
+add/subtract
+
+loop:
+for i in 1 2 3 4 5; do
+    echo "Number: $i"
+done
+
+
+calculater:
+
+echo "Simple Bash Calculator"
+echo "Enter first number: "
+read num1
+
+echo "Enter second number: "
+read num2
+
+echo "Choose operation (+ or -): "
+read op
+
+if [ "$op" = "+" ]; then
+    result=$((num1 + num2))
+    echo "Result: $result"
+elif [ "$op" = "-" ]; then
+    result=$((num1 - num2))
+    echo "Result: $result"
+else
+    echo "Invalid operation"
+fi
+
+
+
+
+

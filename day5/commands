@@ -1,0 +1,139 @@
+william@batman:~$ export Sensor_Type=tempreture
+william@batman:~/iot_logger/logs$ echo $Sensor_Type
+tempreture
+william@batman:~$ sudo chmod -R 770 iot_logger
+william@batman:~$ touch ~/iot_logger/scripts/sensor_scripts.py
+william@batman:~$ nano ~/iot_logger/scripts/sensor_scripts.py
+william@batman:~/iot_logger/scripts$ chmod +x ~/iot_logger/scripts/sensor_scripts.py
+william@batman:~/iot_logger/scripts$ nano ~/iot_logger/scripts/sensor_scripts.py
+william@batman:~/iot_logger/scripts$ python3 ./sensor_scripts.py
+time: 2025-09-03 17:01:58.724306 - temp: 20.48
+time: 2025-09-03 17:02:23.769914 - temp: 24.59
+time: 2025-09-03 17:02:48.797030 - temp: 24.62
+time: 2025-09-03 17:03:13.823794 - temp: 23.56
+time: 2025-09-03 17:03:38.858322 - temp: 28.13
+time: 2025-09-03 17:04:03.885385 - temp: 27.28
+time: 2025-09-03 17:04:28.911708 - temp: 26.49
+
+william@batman:~/iot_logger/logs$ python3 -u ../scripts/sensor_scripts.py >> temp.log &
+[7] 8121
+william@batman:~/iot_logger/logs$ tail -f temp.log
+time: 2025-09-03 17:40:15.749362 - temp: 25.47
+
+time: 2025-09-03 17:40:40.767514 - temp: 29.61
+time: 2025-09-03 17:41:05.791916 - temp: 22.77
+time: 2025-09-03 17:41:30.819238 - temp: 23.81
+time: 2025-09-03 17:41:55.841102 - temp: 27.76
+time: 2025-09-03 17:42:20.865394 - temp: 23.47
+time: 2025-09-03 17:42:45.892238 - temp: 21.50
+time: 2025-09-03 17:43:10.919839 - temp: 20.82
+time: 2025-09-03 17:43:35.964175 - temp: 20.31
+time: 2025-09-03 17:44:00.975790 - temp: 24.87
+time: 2025-09-03 17:44:25.984117 - temp: 23.01
+time: 2025-09-03 17:44:51.015859 - temp: 21.87
+time: 2025-09-03 17:45:16.043768 - temp: 21.37
+time: 2025-09-03 17:45:41.067310 - temp: 29.64
+time: 2025-09-03 17:46:06.088327 - temp: 26.35
+^Z
+[8]+  Stopped                 tail -f temp.log
+william@batman:~/iot_logger/logs$ nano temp.log
+william@batman:~/iot_logger/logs$ ps -f
+UID          PID    PPID  C STIME TTY          TIME CMD
+william     7307    7289  0 15:05 pts/0    00:00:00 bash
+william     7622    7621  0 16:19 pts/0    00:00:00 bash
+william     7931    7622  0 17:01 pts/0    00:00:00 python3 ./sensor_scripts.py
+william     8042    7622  0 17:22 pts/0    00:00:00 tail -f temp.log
+william     8047    7622  0 17:27 pts/0    00:00:00 python3 ../scripts/sensor_scripts.py
+william     8049    7622  0 17:28 pts/0    00:00:00 tail -f temp.log
+william     8052    7622  0 17:30 pts/0    00:00:00 python3 ../scripts/sensor_scripts.py
+william     8121    7622  0 17:40 pts/0    00:00:00 python3 -u ../scripts/sensor_scripts.py
+william     8131    7622  0 17:40 pts/0    00:00:00 tail -f temp.log
+william     8142    7622  0 17:52 pts/0    00:00:00 ps -f
+william@batman:~/iot_logger/logs$ kill 7931
+william@batman:~/iot_logger/logs$ kill 8047
+william@batman:~/iot_logger/logs$ kill 8049
+[4]   Terminated              python3 ../scripts/sensor_scripts.py >> temp.log 2>&1
+william@batman:~/iot_logger/logs$ kill 8052
+william@batman:~/iot_logger/logs$ kill 8121
+william@batman:~/iot_logger/logs$ kill 8131
+[7]   Terminated              python3 -u ../scripts/sensor_scripts.py >> temp.log
+william@batman:~/iot_logger/logs$ 
+
+
+
+william@batman:~/iot_logger/logs$ ps aux | grep python3
+root         599  0.0  0.5  41208 21376 ?        Ss   00:13   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root         706  0.0  0.5 118196 23552 ?        Ssl  00:13   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+william     7931  0.0  0.2  18880  9344 pts/0    T    17:01   0:00 python3 ./sensor_scripts.py
+william     8052  0.0  0.2  18812  9344 pts/0    T    17:30   0:00 python3 ../scripts/sensor_scripts.py
+william     8358  0.0  0.2  18812  9472 pts/0    S    18:27   0:00 python3 ../scripts/sensor_scripts.py
+william     8363  0.0  0.0   9216  2560 pts/0    S+   18:28   0:00 grep --color=auto python3
+
+
+william@batman:~/iot_logger/logs$ ls -l /proc/8358/fd
+total 0
+lrwx------ 1 william iot_team 64 سبت  3 18:30 0 -> /dev/pts/0
+lrwx------ 1 william iot_team 64 سبت  3 18:30 1 -> /dev/pts/0
+lrwx------ 1 william iot_team 64 سبت  3 18:30 2 -> /dev/pts/0
+william@batman:~/iot_logger/logs$ time: 2025-09-03 18:30:47.459766 - temp: 20.42
+time: 2025-09-03 18:31:12.480408 - temp: 28.95
+
+william@batman:~/iot_logger/logs$ kill 8358
+
+
+illiam@batman:~/iot_logger/logs$ touch high_temp.log
+[9]   Terminated              python3 ../scripts/sensor_scripts.py
+william@batman:~/iot_logger/logs$ 
+william@batman:~/iot_logger/logs$ grep 'temp: 29.98' temp.log >> high_temp.log 
+william@batman:~/iot_logger/logs$ nano high_temp.log
+william@batman:~/iot_logger/logs$ nano temp.log
+william@batman:~/iot_logger/logs$ cd ..
+william@batman:~/iot_logger$ ls
+data  logs  scripts
+william@batman:~/iot_logger$ cd data
+william@batman:~/iot_logger/data$ ls
+services
+william@batman:~/iot_logger/data$ cd ..
+william@batman:~/iot_logger$ cd logs
+william@batman:~/iot_logger/logs$ cp ./*.log ../data
+william@batman:~/iot_logger/logs$ cd ../data
+william@batman:~/iot_logger/data$ ls
+high_temp.log  Htemp.log  services  Stemp.log  temp.log
+william@batman:~/iot_logger/data$ 
+
+william@batman:~/iot_logger/data$ unset Sensor_Type
+william@batman:~/iot_logger/data$ echo $Sensor_Type
+
+william@batman:~/iot_logger/data$ 
+
+
+william@batman:~/iot_logger/scripts$ (ls -l; sleep 30) | grep .py
+-rwxrwx--- 1 william william    0 أغس 31 19:30 sensor_script.py
+-rwxrwxr-x 1 william iot_team 210 سبت  3 17:00 sensor_scripts.py
+
+ps aux | grep '[l]s -l'
+
+william@batman:~/iot_logger/scripts$ 
+william@batman:~/iot_logger/scripts$ ps aux | grep '[l]s -l'
+william@batman:~/iot_logger/scripts$ 
+william@batman:~/iot_logger/scripts$ ps aux | grep '[l]s -l'
+william@batman:~/iot_logger/scripts$ ps aux | grep 'ls -l'
+william     8608  0.0  0.0   9216  2560 pts/0    S+   19:42   0:00 grep --color=auto ls -l
+william@batman:~/iot_logger/scripts$ ps aux | grep '[g]rep .py'
+william@batman:~/iot_logger/scripts$ ps aux | grep 'grep .py'
+william     8613  0.0  0.0   9224  2560 pts/0    S+   19:42   0:00 grep --color=auto grep .py
+william@batman:~/iot_logger/scripts$ ls -l /proc/9216/fd
+ls: cannot access '/proc/9216/fd': No such file or directory
+william@batman:~/iot_logger/scripts$ cd ~
+william@batman:~$ ls -l /proc/9216/fd
+ls: cannot access '/proc/9216/fd': No such file or directory
+william@batman:~$ ls -l /proc/8608/fd
+ls: cannot access '/proc/8608/fd': No such file or directory
+william@batman:~$ (ls -l; sleep 30) | grep .py
+
+
+
+
+
+
+
